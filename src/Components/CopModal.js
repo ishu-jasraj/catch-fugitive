@@ -34,21 +34,20 @@ function CopModal({ cop, oncloseModal, onDone, updateCopInfo, cities, vehicles, 
             alert("Please select both a city and a vehicle.");
         }
     };
-
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
             <div className="bg-white p-8 rounded-lg shadow-2xl z-60 max-w-8xl w-full">
                 <div className='flex justify-center space-x-6 mb-8'>
                     {cities.map((city) => (
                         <div key={city.id} className={`cursor-pointer ${city.selected ? 'opacity-50' : ''}`} onClick={() => handleCityClick(city)}>
-                            <img src={city.image} alt={`city${city.id}`} className="h-80 w-80 object-cover rounded-lg" />
+                            <img src={city.image} alt={`city${city.id}`} className={`h-80 w-80 object-cover rounded-lg ${selectedCity === city ? 'border-8 border-green-500 shadow-lg transform scale-105' : ''}`} />
                         </div>
                     ))}
                 </div>
                 <div className='flex justify-center space-x-6 mb-8'>
                     {vehicles.map((vehicle) => (
                         <div key={vehicle.id} className={`cursor-pointer ${vehicle.selected || vehicle.count <= 0 ? 'opacity-50' : ''}`} onClick={() => handleVehicleClick(vehicle)}>
-                            <img src={vehicle.image} alt={`vehicle${vehicle.id}`} className="h-80 w-80 object-cover rounded-lg" />
+                            <img src={vehicle.image} alt={`vehicle${vehicle.id}`} className={`h-80 w-80 object-cover rounded-lg ${selectedVehicle === vehicle ? 'border-8 border-blue-500 shadow-lg transform scale-105' : ''}`} />
                         </div>
                     ))}
                 </div>
