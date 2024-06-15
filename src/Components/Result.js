@@ -46,7 +46,7 @@ const Results = () => {
             <h2 className="text-4xl font-extrabold text-white text-center mb-8 drop-shadow-lg">Results</h2>
             {winner ? (
                 <>
-                    <p key={winner.id} className="text-xxl mb-4">Congratulations! The fugitive was captured in {winner.city} by Cop {winner.id}.</p>
+                    <p key={winner.id} className="text-2xl mb-4">Congratulations! The fugitive was captured in {winner.city} by Cop {winner.id}.</p>
                     <div className="flex space-x-4">
                         <img src={winner.image} alt={`Cop ${winner.id}`} className="h-80 w-80 rounded-lg shadow-lg" />
                         <img src={thief} alt="Thief" className="h-80 w-80 rounded-lg shadow-lg" />
