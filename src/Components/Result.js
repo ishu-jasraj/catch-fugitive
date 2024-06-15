@@ -17,7 +17,7 @@ const Results = () => {
     for (let i = 0; i < cities.length; i++) {
         cityList.push(cities[i].name);
     }
-    console.log("dekho inhe ye nanhi si boonde", copInfo);
+    console.log("Cop information:", copInfo);
 
     let thiefCity = cityList[getRandomValue()];
 
@@ -40,21 +40,28 @@ const Results = () => {
         // Navigate back to the cop selection page
         navigate('/cops');
     };
+
     return (
-        <div>
-            <p> Result out ho gya hai bhai</p>
+        <div className="min-h-screen bg-gradient-to-r from-black via-blue-900 to-black p-8 flex flex-col justify-center items-center text-white">
+            <h2 className="text-4xl font-extrabold text-white text-center mb-8 drop-shadow-lg">Results</h2>
             {winner ? (
                 <>
-                    <p key={winner.id}>Bale bale te sava sava chor mil gya. {winner.city}</p>
-                    <img src={winner.image} alt={`Cop ${winner.id}`} className="h-80 w-80" />
-                    <img src={thief} alt="thief" className="h-80 w-80" />
+                    <p key={winner.id} className="text-xxl mb-4">Congratulations! The fugitive was captured in {winner.city} by Cop {winner.id}.</p>
+                    <div className="flex space-x-4">
+                        <img src={winner.image} alt={`Cop ${winner.id}`} className="h-80 w-80 rounded-lg shadow-lg" />
+                        <img src={thief} alt="Thief" className="h-80 w-80 rounded-lg shadow-lg" />
+                    </div>
                 </>
             ) : (
-                <p>Lo bhai sab chor bhaag gaye, koi pakda nahi.</p>
+                <div className="flex flex-col items-center">
+                    <p className="text-2xl font-semibold mb-4 text-center">Unfortunately, the fugitive managed to escape.</p>
+                    <p className="text-xl font-light mb-4 text-center">Better luck next time!</p>
+                    <img src={thief} alt="Thief" className="h-80 w-80 rounded-lg shadow-lg mt-4" />
+                </div>
             )}
             <button
                 onClick={handleRestart}
-                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mt-4"
+                className="bg-gradient-to-r from-blue-500 to-blue-700 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transform transition-transform duration-300 hover:scale-110 mt-8"
             >
                 Restart
             </button>
@@ -62,4 +69,4 @@ const Results = () => {
     );
 }
 
-export default Results
+export default Results;
