@@ -36,32 +36,32 @@ function CopModal({ cop, oncloseModal, onDone, updateCopInfo, cities, vehicles, 
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-                <div className='flex justify-center space-x-6'>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
+            <div className="bg-white p-8 rounded-lg shadow-2xl z-60 max-w-8xl w-full">
+                <div className='flex justify-center space-x-6 mb-8'>
                     {cities.map((city) => (
                         <div key={city.id} className={`cursor-pointer ${city.selected ? 'opacity-50' : ''}`} onClick={() => handleCityClick(city)}>
-                            <img src={city.image} alt={`city${city.id}`} />
+                            <img src={city.image} alt={`city${city.id}`} className="h-80 w-80 object-cover rounded-lg" />
                         </div>
                     ))}
                 </div>
-                <div className='mt-4 flex justify-center space-x-6'>
+                <div className='flex justify-center space-x-6 mb-8'>
                     {vehicles.map((vehicle) => (
                         <div key={vehicle.id} className={`cursor-pointer ${vehicle.selected || vehicle.count <= 0 ? 'opacity-50' : ''}`} onClick={() => handleVehicleClick(vehicle)}>
-                            <img src={vehicle.image} alt={`vehicle${vehicle.id}`} />
+                            <img src={vehicle.image} alt={`vehicle${vehicle.id}`} className="h-80 w-80 object-cover rounded-lg" />
                         </div>
                     ))}
                 </div>
-                <div className="mt-4 flex justify-end space-x-2">
+                <div className="flex justify-center space-x-4 mt-8">
                     <button
                         onClick={handleDoneClick}
-                        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                        className="bg-blue-500 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transform transition-transform duration-300 hover:scale-105"
                     >
                         Done
                     </button>
                     <button
                         onClick={oncloseModal}
-                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                        className="bg-red-500 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg hover:shadow-xl transform transition-transform duration-300 hover:scale-105"
                     >
                         Close
                     </button>
