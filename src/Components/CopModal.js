@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 function CopModal({ cop, oncloseModal, onDone, updateCopInfo, cities, vehicles, updateCities, updateVehicles }) {
     const [selectedCity, setSelectedCity] = useState(null);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
+    const [showDialog, setShowDialog] = useState(false);
+    const [dialogMessage, setDialogMessage] = useState("");
 
     const handleCityClick = (city) => {
         if (!city.selected) {
@@ -28,12 +30,19 @@ function CopModal({ cop, oncloseModal, onDone, updateCopInfo, cities, vehicles, 
                 }
                 onDone(cop);
             } else {
-                alert("For the selected city the range of vehicle is not sufficient please choose another vehicle.");
+                setDialogMessage("For the selected city, the range of the vehicle is not sufficient. Please choose another vehicle.");
+                setShowDialog(true);
             }
         } else {
-            alert("Please select both a city and a vehicle.");
+            setDialogMessage("Please select both a city and a vehicle.");
+            setShowDialog(true);
         }
     };
+
+    const handleCloseDialog = () => {
+        setShowDialog(false);
+    };
+
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
             <div className="bg-white p-8 rounded-lg shadow-2xl z-60 max-w-8xl w-full">
@@ -66,6 +75,20 @@ function CopModal({ cop, oncloseModal, onDone, updateCopInfo, cities, vehicles, 
                     </button>
                 </div>
             </div>
+
+            {showDialog && (
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-70">
+                    <div className="bg-white p-6 rounded-lg shadow-2xl max-w-sm w-full text-center">
+                        <p className="mb-4 text-lg font-medium text-gray-800">{dialogMessage}</p>
+                        <button
+                            onClick={handleCloseDialog}
+                            className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600"
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
