@@ -46,7 +46,6 @@ function CopModal({ cop, oncloseModal, onDone, updateCopInfo, cities, vehicles, 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
             <div className="bg-white p-8 rounded-lg shadow-2xl z-60 max-w-8xl w-full">
-                <div className='text-3xl font-bold mb-10'>Select a city and a vehicle</div>
                 <div className='flex justify-center space-x-6 mb-8'>
                     {cities.map((city) => (
                         <div key={city.id} className={`cursor-pointer ${city.selected ? 'opacity-50' : ''}`} onClick={() => handleCityClick(city)}>
