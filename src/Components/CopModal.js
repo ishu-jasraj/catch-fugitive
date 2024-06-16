@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function CopModal({ cop, oncloseModal, onDone, updateCopInfo, cities, vehicles, updateCities, updateVehicles }) {
+function CopModal({ cop, copInfo, oncloseModal, onDone, updateCopInfo, cities, vehicles, updateCities, updateVehicles }) {
     const [selectedCity, setSelectedCity] = useState(null);
     const [selectedVehicle, setSelectedVehicle] = useState(null);
     const [showDialog, setShowDialog] = useState(false);
@@ -17,20 +17,82 @@ function CopModal({ cop, oncloseModal, onDone, updateCopInfo, cities, vehicles, 
             setSelectedVehicle(vehicle);
         }
     };
+    const isValidCombination = () => {
+        const remainingCops =
+            copInfo.length - copInfo.filter((cop) => cop.selected).length - 1;
+
+        const remainingCities = cities.filter(
+            (city) => !city.selected && city !== selectedCity
+        );
+        const remainingVehicles = vehicles.filter(
+            (vehicle) =>
+                !vehicle.selected &&
+                vehicle !== selectedVehicle &&
+                vehicle.count > 0
+        );
+
+        if (
+            remainingCities.length < remainingCops ||
+            remainingVehicles.length < remainingCops
+        ) {
+            return false;
+        }
+
+        // Create a map of cities to valid vehicles
+        const cityToVehicleMap = remainingCities.map((city) => ({
+            city,
+            vehicles: remainingVehicles.filter(
+                (vehicle) => city.distance * 2 <= vehicle.range
+            ),
+        }));
+
+        // Check if there are enough valid combinations
+        let validCombinations = 0;
+        if (validCombinations >= remainingCops) {
+            return true;
+        }
+        for (let i = 0; i < cityToVehicleMap.length; i++) {
+            if (cityToVehicleMap[i].vehicles.length > 0) {
+                validCombinations++;
+                if (validCombinations >= remainingCops) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    };
 
     const handleDoneClick = () => {
         if (selectedCity && selectedVehicle) {
             if (selectedCity.distance * 2 <= selectedVehicle.range) {
-                updateCopInfo(cop, { city: selectedCity.name, vehicle: selectedVehicle.type });
-                updateCities(selectedCity.id, { selected: true });
-                if (selectedVehicle.count - 1 === 0) {
-                    updateVehicles(selectedVehicle.id, { selected: true, count: selectedVehicle.count - 1 });
+                if (isValidCombination()) {
+                    updateCopInfo(cop, {
+                        city: selectedCity.name,
+                        vehicle: selectedVehicle.type,
+                    });
+                    updateCities(selectedCity.id, { selected: true });
+                    if (selectedVehicle.count - 1 === 0) {
+                        updateVehicles(selectedVehicle.id, {
+                            selected: true,
+                            count: selectedVehicle.count - 1,
+                        });
+                    } else {
+                        updateVehicles(selectedVehicle.id, {
+                            count: selectedVehicle.count - 1,
+                        });
+                    }
+                    onDone(cop);
                 } else {
-                    updateVehicles(selectedVehicle.id, { count: selectedVehicle.count - 1 });
+                    setDialogMessage(
+                        "This selection will leave no valid combinations for the remaining cops. Please choose another city or vehicle."
+                    );
+                    setShowDialog(true);
                 }
-                onDone(cop);
             } else {
-                setDialogMessage("For the selected city, the range of the vehicle is not sufficient. Please choose another vehicle.");
+                setDialogMessage(
+                    "For the selected city, the range of the vehicle is not sufficient. Please choose another vehicle."
+                );
                 setShowDialog(true);
             }
         } else {
@@ -38,6 +100,7 @@ function CopModal({ cop, oncloseModal, onDone, updateCopInfo, cities, vehicles, 
             setShowDialog(true);
         }
     };
+
 
     const handleCloseDialog = () => {
         setShowDialog(false);
